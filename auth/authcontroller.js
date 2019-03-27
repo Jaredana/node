@@ -10,7 +10,7 @@ router.use(bodyParser.json());
 var User = require('../user/User');
 
 /*
-You can add VerifyToken to any method to enable requiring login to access view
+You can add VerifyToken to any method to enable requiring login to access API
 */
 router.post('/register', function(req, res) {
   

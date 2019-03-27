@@ -6,9 +6,13 @@ var AuthController = require('./auth/AuthController');
 var users = require('./routes/users');
 var login = require('./routes/login');
 var db = require('./db');
-
 var app = express();
+/* TODO:
+display a login page for root website directory '/'
+build a form in angular, and link it to register view, so users can be registered from angular site
+allow users to be viewed from angular page(pretty much just connect node and angular)
 
+*/
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser())
