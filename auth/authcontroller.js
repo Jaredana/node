@@ -16,7 +16,6 @@ const jwt_expire_time = 600;
 router.post('/register', function(req, res, next) {
   
     var hashedPassword = bcrypt.hashSync(req.body.password, 8);
-    console.log(hashedPassword);
     User.create({
       name : req.body.name,
       email : req.body.email,
@@ -53,7 +52,7 @@ router.post('/login', function(req, res) {
       var token = jwt.sign({ id: user._id }, config.secret, {
         expiresIn: jwt_expire_time // expires in 10 mins
       });
-      res.status(200).send({token: token });
+      res.status(200).send({token: token, user_id: user.name});
     });
   });
 
