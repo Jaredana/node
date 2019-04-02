@@ -12,7 +12,8 @@ var User = require('../user/User');
 /*
 You can add VerifyToken to any method to enable requiring login to access API
 */
-router.post('/register', function(req, res) {
+const jwt_expire_time = 600;
+router.post('/register', function(req, res, next) {
   
     var hashedPassword = bcrypt.hashSync(req.body.password, 8);
     console.log(hashedPassword);
@@ -25,16 +26,14 @@ router.post('/register', function(req, res) {
       if (err) return res.status(500).send("There was a problem registering the user.")
       // create a token
       var token = jwt.sign({ id: user._id }, config.secret, {
-        expiresIn: 86400 // expires in 24 hours
+        expiresIn: jwt_expire_time // expires in 10 mins
       });
-
-      res.status(200).send({ auth: true, token: token });
-      
+      res.status(200).send({auth: true, token: token});
     }); 
   });
 
   //check json token
-router.get('/me', VerifyToken, function(req, res, next) {
+router.get('/me', function(req, res) {
     User.findById(req.userId, { password: 0 }, function (err, user) {
       if (err) return res.status(500).send("There was a problem finding the user.");
       if (!user) return res.status(404).send("No user found.");
@@ -44,15 +43,17 @@ router.get('/me', VerifyToken, function(req, res, next) {
   });
 
 router.post('/login', function(req, res) {
+
     User.findOne({ email: req.body.email }, function (err, user) {
+      
       if (err) return res.status(500).send('Error on the server.');
       if (!user) return res.status(404).send('No user found.');
       var passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
       if (!passwordIsValid) return res.status(401).send({ auth: false, token: null });
       var token = jwt.sign({ id: user._id }, config.secret, {
-        expiresIn: 86400 // expires in 24 hours
+        expiresIn: jwt_expire_time // expires in 10 mins
       });
-      res.status(200).send({ auth: true, token: token });
+      res.status(200).send({token: token });
     });
   });
 
