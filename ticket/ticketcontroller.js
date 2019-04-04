@@ -18,7 +18,7 @@ router.post('/maketicket', function(req, res, next) {
         ID: req.body.ID,
         Issue: req.body.Issue,
         Location: req.body.Location,
-        Date: req.body.date,
+        Date: req.body.Date,
         User_ID: req.body.User_ID
     },
     function(err, ticket) {

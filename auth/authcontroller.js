@@ -12,7 +12,7 @@ var User = require('../user/User');
 /*
 You can add VerifyToken to any method to enable requiring login to access API
 */
-const jwt_expire_time = 600;
+const jwt_expire_time = 86400;
 router.post('/register', function(req, res, next) {
   
     var hashedPassword = bcrypt.hashSync(req.body.password, 8);
