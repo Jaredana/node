@@ -1,9 +1,9 @@
 var mongoose = require('mongoose');  
 var TicketSchema = new mongoose.Schema({  
-  ID: String,
+  ID: Number,
   Issue: String,
   Location: String,
-  Date: String,
+  Date: Date,
   User_ID: String,
 });
 mongoose.model('Ticket', TicketSchema);

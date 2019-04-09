@@ -10,9 +10,15 @@ router.use(bodyParser.json());
 router.get('/getticket', function(req, res) {
     Ticket.find({}, function (err, tickets) {
         if (err) return res.status(500).send("There was a problem finding the tickets.");
-        res.status(200).send(tickets);
+        res.status(200).send({'tickets': tickets});
     });
 });
+router.get('/findlargestID', function(req, res) {
+    Ticket.find().sort({ID: -1}).limit(1), function(err, ID) {
+        if(err) return res.status(500).send(1);
+        res.status(200).send({'ID': ID})
+    };
+})
 router.post('/maketicket', function(req, res, next) {
     Ticket.create({
         ID: req.body.ID,
