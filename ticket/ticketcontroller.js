@@ -13,15 +13,17 @@ router.get('/getticket', function(req, res) {
         res.status(200).send({'tickets': tickets});
     });
 });
-router.get('/findlargestID', function(req, res) {
-    Ticket.find().sort({ID: -1}).limit(1), function(err, ID) {
-        if(err) return res.status(500).send(1);
-        res.status(200).send({'ID': ID})
-    };
-})
+//Function return value has err SyntaxError: Unexpected Identifier. This is likely the reason the query returns nothing or NaN
+function getID() {
+    Ticket.find({}).sort({ID:-1}).limit(1), function(err, ticket) {
+        if(err) return ({'ID': -1})
+        return Number(ticket);
+    }
+}
 router.post('/maketicket', function(req, res, next) {
+    var ID = getID()
     Ticket.create({
-        ID: req.body.ID,
+        ID: ID,
         Issue: req.body.Issue,
         Location: req.body.Location,
         Date: req.body.Date,
@@ -29,8 +31,8 @@ router.post('/maketicket', function(req, res, next) {
     },
     function(err, ticket) {
         if(err) return res.status(500).send("We couldnt create the ticket")
-        
         res.status(200).send({ticket: ticket})
     });
 });
+
 module.exports = router;
