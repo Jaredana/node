@@ -8,22 +8,15 @@ router.use(bodyParser.json());
 
 //logic for grabbing tickets from database with varying filter
 router.get('/getticket', function(req, res) {
-    Ticket.find({}, function (err, tickets) {
+    Ticket.find({}, function(err, tickets) {
         if (err) return res.status(500).send("There was a problem finding the tickets.");
         res.status(200).send({'tickets': tickets});
     });
 });
-//Function return value has err SyntaxError: Unexpected Identifier. This is likely the reason the query returns nothing or NaN
-function getID() {
-    Ticket.find({}).sort({ID:-1}).limit(1), function(err, ticket) {
-        if(err) return ({'ID': -1})
-        return Number(ticket);
-    }
-}
+
 router.post('/maketicket', function(req, res, next) {
-    var ID = getID()
     Ticket.create({
-        ID: ID,
+        ID: req.body._id,
         Issue: req.body.Issue,
         Location: req.body.Location,
         Date: req.body.Date,
