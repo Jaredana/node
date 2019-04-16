@@ -27,5 +27,11 @@ router.post('/maketicket', function(req, res, next) {
         res.status(200).send({ticket: ticket})
     });
 });
+router.post('/editticket', function(req, res) {
+    Ticket.find({}).updateOne({'_id': req.body.ID_to_edit},{'Issue': req.body.Issue, 'Location': req.body.Location, 'Date': req.body.my_Date, 'User_ID' : req.body.User_ID}, function(err, ticket) {
+        if(err) return res.status(500).send("We couldnt find that ticket");
+        res.status(200).send("Ticket Edited");
+    })
+})
 
 module.exports = router;
