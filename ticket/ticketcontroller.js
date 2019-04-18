@@ -28,10 +28,16 @@ router.post('/maketicket', function(req, res, next) {
     });
 });
 router.post('/editticket', function(req, res) {
-    Ticket.find({}).updateOne({'_id': req.body.ID_to_edit},{'Issue': req.body.Issue, 'Location': req.body.Location, 'Date': req.body.my_Date, 'User_ID' : req.body.User_ID}, function(err, ticket) {
-        if(err) return res.status(500).send("We couldnt find that ticket");
-        res.status(200).send("Ticket Edited");
-    })
-})
+    Ticket.find({}).updateOne({'_id': req.body.ID_to_edit},{'Issue': req.body.Issue, 'Location': req.body.Location, 'Date': req.body.Date, 'User_ID' : req.body.User_ID}, function(err, ticket) {
+        if(err) return res.status(500).send('we couldnt find that ticket to edit it');
+        res.status(200).send({ticket: 'ticket edited'});
+    });
+});
+router.post('/deleteticket', function(req, res) {
+    Ticket.find({}).findOneAndDelete({'_id': req.body.ID_to_delete}, function(err, del) {
+        if(err) return res.status(500).send('We couldnt find that ticket to delete it');
+        res.status(200).send({del: 'ticket removed'});
+    });
+});
 
 module.exports = router;
